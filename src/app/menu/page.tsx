@@ -41,7 +41,7 @@ export default function Menu() {
         {filteredFoods.length > 0 ? (
           filteredFoods.map(food => (
             <MenuCard
-              key={food.id}
+              id={food.food_id}
               title={food.name}
               description={food.description}
               price={food.price}
