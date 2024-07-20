@@ -7,5 +7,9 @@ export default async function LoginPage() {
   if (session) {
     redirect('/');
   }
-  return <Form />;
+  return (
+    <div className='flex justify-center min-h-screen items-center'>
+      <Form />
+    </div>
+  )
 }
