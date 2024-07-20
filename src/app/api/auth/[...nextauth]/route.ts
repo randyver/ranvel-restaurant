@@ -13,30 +13,45 @@ const handler = NextAuth({
   providers: [
     CredentialsProvider({
       credentials: {
-        email: {},
-        password: {},
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        //
-        const response = await sql`
-        SELECT * FROM users WHERE email=${credentials?.email}`;
-        const user = response.rows[0];
-
-        const passwordCorrect = await compare(
-          credentials?.password || '',
-          user.password
-        );
-
-        console.log({ passwordCorrect });
-
-        if (passwordCorrect) {
-          return {
-            id: user.id,
-            email: user.email,
-          };
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error('Missing email or password');
         }
 
-        return null;
+        try {
+          // Fetch user from the database
+          const response = await sql`
+            SELECT * FROM users WHERE email=${credentials.email}
+          `;
+          const user = response.rows[0];
+
+          if (!user) {
+            console.log('User not found');
+            return null;
+          }
+
+          // Verify the password
+          const passwordCorrect = await compare(
+            credentials.password,
+            user.password
+          );
+
+          if (passwordCorrect) {
+            return {
+              id: user.id,
+              email: user.email,
+            };
+          } else {
+            console.log('Invalid password');
+            return null;
+          }
+        } catch (error) {
+          console.error('Authorization error:', error);
+          return null;
+        }
       },
     }),
   ],

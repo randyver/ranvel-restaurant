@@ -7,14 +7,6 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-import {
-  Form,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  FormField,
-} from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -28,14 +20,10 @@ const LoginSchema = z.object({
 type FormValues = z.infer<typeof LoginSchema>;
 
 export default function LoginForm() {
-  const methods = useForm<FormValues>({
+  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(LoginSchema),
   });
-  const {
-    handleSubmit,
-    formState: { errors },
-  } = methods;
-  
+
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
@@ -47,7 +35,7 @@ export default function LoginForm() {
 
     console.log({ response });
     if (!response?.error) {
-      router.push('/');
+      router.push('/menu');
       router.refresh();
     }
   };
@@ -56,54 +44,32 @@ export default function LoginForm() {
     <Card className="w-3/12">
       <CardHeader><CardTitle className="text-center">Login</CardTitle></CardHeader>
       <CardContent>
-        <Form {...methods}>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-2 mx-auto max-w-md"
-          >
-            <FormField
-              name="email"
-              control={methods.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="border border-black text-black"
-                      type="email"
-                      placeholder="Email"
-                    />
-                  </FormControl>
-                  {errors.email && (
-                    <FormMessage>{errors.email.message}</FormMessage>
-                  )}
-                </FormItem>
-              )}
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-2 mx-auto max-w-md"
+        >
+          <div className="flex flex-col mb-4">
+            <label>Email</label>
+            <Input
+              {...register('email')}
+              className="border border-black text-black"
+              type="email"
+              placeholder="Email"
             />
-            <FormField
-              name="password"
-              control={methods.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="border border-black text-black"
-                      type="password"
-                      placeholder="Password"
-                    />
-                  </FormControl>
-                  {errors.password && (
-                    <FormMessage>{errors.password.message}</FormMessage>
-                  )}
-                </FormItem>
-              )}
+            {errors.email && <span>{errors.email.message}</span>}
+          </div>
+          <div className="flex flex-col mb-4">
+            <label>Password</label>
+            <Input
+              {...register('password')}
+              className="border border-black text-black"
+              type="password"
+              placeholder="Password"
             />
-            <Button type="submit">Login</Button>
-          </form>
-        </Form>
+            {errors.password && <span>{errors.password.message}</span>}
+          </div>
+          <Button type="submit">Login</Button>
+        </form>
         <p className="text-center mt-4">
           Belum memiliki akun? <Link href="/register" className="text-blue-500">Register</Link>
         </p>
