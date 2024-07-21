@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { hash } from 'bcrypt';
 import { sql } from '@vercel/postgres';
+import { db } from '@/db/drizzle';
+import { users } from '@/db/schema';
 
 export async function POST(request: Request) {
   try {
@@ -10,10 +12,14 @@ export async function POST(request: Request) {
 
     const hashedPassword = await hash(password, 10);
 
-    const response = await sql`
-      INSERT INTO users (username, email, password, phone)
-      VALUES (${username}, ${email}, ${hashedPassword}, ${phone})
-    `;
+    await db.insert(users).values({
+      username: username,
+      email: email,
+      password: hashedPassword,
+      phone: phone,
+    })
+
+
   } catch (e) {
     console.log({ e });
     return NextResponse.json({ message: 'error', error: (e as Error).message }, { status: 500 });

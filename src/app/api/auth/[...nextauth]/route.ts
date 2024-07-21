@@ -2,6 +2,9 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compare } from 'bcrypt';
 import { sql } from '@vercel/postgres';
+import { db } from '@/db/drizzle';
+import { users } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 const handler = NextAuth({
   session: {
@@ -23,31 +26,24 @@ const handler = NextAuth({
 
         try {
           // Fetch user from the database
-          const response = await sql`
-            SELECT * FROM users WHERE email=${credentials.email}
-          `;
-          const user = response.rows[0];
+          const user = await db.query.users.findFirst({
+            where: eq(users.email, credentials.email),
+          });
 
-          if (!user) {
-            console.log('User not found');
-            return null;
+          if(!user || !user.password) {
+            throw new Error('Invalid email or password');
           }
 
-          // Verify the password
-          const passwordCorrect = await compare(
-            credentials.password,
-            user.password
-          );
+          // Check if the password is valid
+          const isValid = await compare(credentials.password, user.password);
 
-          if (passwordCorrect) {
-            return {
-              id: user.id,
-              email: user.email,
-            };
-          } else {
-            console.log('Invalid password');
-            return null;
+          if (!isValid) {
+            throw new Error('Invalid email or password');
           }
+          
+          return { id: user.user_id, email: user.email };
+          
+
         } catch (error) {
           console.error('Authorization error:', error);
           return null;
