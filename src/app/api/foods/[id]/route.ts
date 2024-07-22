@@ -2,6 +2,9 @@
 
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres'; // or your preferred SQL library
+import { eq } from 'drizzle-orm';
+import { db } from '@/db/drizzle';
+import { foods } from '@/db/schema';
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -12,10 +15,10 @@ export async function GET(request: Request) {
   }
   
   try {
-    const result = await sql`
-      SELECT food_id, name, description, price FROM foods WHERE food_id = ${id}
-    `;
-    const food = result.rows[0]; // Assume there is only one item
+
+    const food = await db.query.foods.findFirst({
+      where: eq(foods.food_id, id),
+    })
 
     if (!food) {
       return NextResponse.json({ error: 'Food not found' }, { status: 404 });
