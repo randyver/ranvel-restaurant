@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface CartItem {
   id: number;
@@ -11,6 +12,7 @@ interface CartItem {
 export default function Cart() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [total, setTotal] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -35,6 +37,24 @@ export default function Cart() {
     fetchCart();
   }, []);
 
+  const handleCheckout = async () => {
+    try {
+      const response = await fetch('/api/cart', {
+        method: 'DELETE',
+      });
+      const data = await response.json();
+      if (response.ok) {
+        router.push(`/order/${data.orderId}`);
+      } else {
+        console.error('Failed to checkout:', data.error);
+        // Handle error (e.g., show a message to the user)
+      }
+    } catch (error) {
+      console.error('Error during checkout:', error);
+      // Handle error (e.g., show a message to the user)
+    }
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold">Your Cart</h1>
@@ -55,9 +75,7 @@ export default function Cart() {
       )}
       <button
         className="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-        onClick={() => {
-          // Logic for checkout
-        }}
+        onClick={handleCheckout}
       >
         Checkout
       </button>

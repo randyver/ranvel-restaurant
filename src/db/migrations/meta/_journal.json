@@ -15,6 +15,20 @@
       "when": 1721900106642,
       "tag": "0001_fat_mandroid",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1721926191413,
+      "tag": "0002_purple_steve_rogers",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1721926686293,
+      "tag": "0003_burly_fantastic_four",
+      "breakpoints": true
     }
   ]
 }
