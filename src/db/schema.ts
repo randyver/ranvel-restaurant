@@ -8,9 +8,10 @@ import {
   uuid,
   time,
   primaryKey,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 
-export const users = pgTable("user", {
+export const users = pgTable("users", {
   user_id: uuid("user_id").defaultRandom().primaryKey(),
   username: text("username").notNull(),
   password: text("password").notNull(),
@@ -31,11 +32,11 @@ export const foods = pgTable("foods", {
 export const carts = pgTable("carts", {
   user_id: uuid("user_id")
     .notNull()
-    .references(() => users.user_id, { onDelete: "cascade" })
-    .unique(),
+    .references(() => users.user_id, { onDelete: "cascade" }),
   food_id: uuid("food_id")
     .notNull()
-    .references(() => foods.food_id, { onDelete: "cascade" })
-    .unique(),
+    .references(() => foods.food_id, { onDelete: "cascade" }),
   quantity: integer("quantity").notNull(),
-});
+}, (carts) => ({
+  uniqueUserFood: uniqueIndex("unique_user_food").on(carts.user_id, carts.food_id)
+}));
