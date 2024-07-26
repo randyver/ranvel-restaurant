@@ -37,7 +37,7 @@ export default function Navbar() {
                   <NavigationMenuLink href="/cart" className="hover:text-gray-300">Cart</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href="/about" className="hover:text-gray-300">Profile</NavigationMenuLink>
+                  <NavigationMenuLink href="/profile" className="hover:text-gray-300">Profile</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <button
