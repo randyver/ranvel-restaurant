@@ -3,12 +3,13 @@ import { sql } from '@vercel/postgres';
 
 export async function GET(req: NextRequest, { params }: { params: any }) {
   const { id } = params;
-  
+
   try {
     const orderResult = await sql`
-      SELECT order_id, order_date, total_amount
+      SELECT orders.order_id, orders.order_date, orders.total_amount, users.username, users.email
       FROM orders
-      WHERE order_id = ${id}
+      JOIN users ON orders.user_id = users.user_id
+      WHERE orders.order_id = ${id}
     `;
     const order = orderResult.rows[0];
 

@@ -13,6 +13,8 @@ interface Order {
   order_id: string;
   order_date: string;
   total_amount: number;
+  username: string;
+  email: string;
 }
 
 export default function OrderDetails() {
@@ -52,6 +54,8 @@ export default function OrderDetails() {
       <h1 className="text-2xl font-bold">Order Details</h1>
       <p><strong>Order ID:</strong> {order.order_id}</p>
       <p><strong>Order Date:</strong> {new Date(order.order_date).toLocaleString()}</p>
+      <p><strong>Username:</strong> {order.username}</p>
+      <p><strong>Email:</strong> {order.email}</p>
       <h2 className="text-xl font-semibold mt-4">Items</h2>
       <ul>
         {orderItems.length > 0 ? (
