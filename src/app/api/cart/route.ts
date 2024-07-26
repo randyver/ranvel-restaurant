@@ -63,8 +63,10 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
   }
 
-  const res = await sql`SELECT user_id FROM users WHERE email=${session.user.email}`;
-  const userId = res.rows[0].user_id;
+  const res = await sql`SELECT user_id, saldo FROM users WHERE email=${session.user.email}`;
+  const user = res.rows[0];
+  const userId = user.user_id;
+  const userSaldo = user.saldo;
 
   const client = await sql.connect();
 
@@ -81,12 +83,22 @@ export async function DELETE(req: NextRequest) {
     
     const cartItems = cartItemsResult.rows;
 
+    // Calculate total price
+    const totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    // Check if the user's saldo is sufficient
+    if (userSaldo < totalAmount) {
+      await client.query('ROLLBACK');
+      console.log('Insufficient saldo');
+      return NextResponse.json({ error: 'Insufficient saldo' }, { status: 400 });
+    }
+
     // Insert into orders table
     const orderResult = await client.query(`
       INSERT INTO orders (user_id, total_amount)
       VALUES ($1, $2)
       RETURNING order_id
-    `, [userId, cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)]);
+    `, [userId, totalAmount]);
 
     const orderId = orderResult.rows[0].order_id;
 
@@ -97,6 +109,13 @@ export async function DELETE(req: NextRequest) {
         VALUES ($1, $2, $3, $4)
       `, [orderId, item.food_id, item.quantity, item.price]);
     }
+
+    // Deduct the total amount from user's saldo
+    await client.query(`
+      UPDATE users
+      SET saldo = saldo - $1
+      WHERE user_id = $2
+    `, [totalAmount, userId]);
 
     // Delete items from carts table
     await client.query(`
@@ -115,4 +134,3 @@ export async function DELETE(req: NextRequest) {
     client.release();
   }
 }
-
