@@ -35,7 +35,7 @@ export default function LoginForm() {
 
     console.log({ response });
     if (!response?.error) {
-      router.push('/menu');
+      router.push('/');
       router.refresh();
     }
   };

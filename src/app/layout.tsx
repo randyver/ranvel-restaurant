@@ -1,7 +1,8 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-import Navbar from "@/components/navbar"; // Import the Navbar component
+import { useState } from "react";
+import Navbar from "@/components/navbar";
 import "./globals.css";
 
 export default function RootLayout({
@@ -9,12 +10,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // State to manage navbar active status
+  const [isNavBarActive, setIsNavBarActive] = useState(false);
+
   return (
     <html lang="en">
       <body>
         <SessionProvider>
-          <Navbar /> {/* Add Navbar here */}
-          <main>{children}</main> {/* Render the main content */}
+          {/* Pass the state and state updater to the Navbar */}
+          <Navbar 
+            isNavBarActive={isNavBarActive} 
+            setIsNavBarActive={setIsNavBarActive} 
+          />
+          <main>{children}</main>
         </SessionProvider>
       </body>
     </html>
