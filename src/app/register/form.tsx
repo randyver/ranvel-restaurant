@@ -17,18 +17,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Link from "next/link";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // Define zod schema
 const RegisterSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  phone: z.string().optional(), // Optional phone number field
+  phone: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof RegisterSchema>;
 
 export default function RegisterForm() {
+  const router = useRouter();
+
   const methods = useForm<FormValues>({
     resolver: zodResolver(RegisterSchema),
   });
@@ -43,6 +47,10 @@ export default function RegisterForm() {
       body: JSON.stringify(data),
     });
     console.log({ response });
+    if (response.ok) {
+      toast.success("Registration successful");
+      router.push("/login");
+    }
   };
 
   return (

@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
 import Navbar from "@/components/navbar";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 export default function RootLayout({
   children,
@@ -23,6 +24,7 @@ export default function RootLayout({
             setIsNavBarActive={setIsNavBarActive} 
           />
           <main className="p-10">{children}</main>
+          <Toaster />
         </SessionProvider>
       </body>
     </html>

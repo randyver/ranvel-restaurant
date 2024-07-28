@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,6 +36,7 @@ export default function LoginForm() {
 
     console.log({ response });
     if (!response?.error) {
+      toast.success('Login successful');
       router.push('/');
       router.refresh();
     }
