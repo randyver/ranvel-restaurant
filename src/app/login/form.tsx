@@ -41,8 +41,8 @@ export default function LoginForm() {
   };
 
   return (
-    <Card className="w-3/12">
-      <CardHeader><CardTitle className="text-center">Login</CardTitle></CardHeader>
+    <Card className="w-full border-orange-600 md:w-6/12 lg:w-5/12 xl:w-3/12">
+      <CardHeader><CardTitle className="text-center text-orange-600">Login</CardTitle></CardHeader>
       <CardContent>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -71,7 +71,7 @@ export default function LoginForm() {
           <Button type="submit">Login</Button>
         </form>
         <p className="text-center mt-4">
-          Belum memiliki akun? <Link href="/register" className="text-blue-500">Register</Link>
+          Don't have an account yet? <Link href="/register" className="text-orange-600">Register</Link>
         </p>
       </CardContent>
     </Card>

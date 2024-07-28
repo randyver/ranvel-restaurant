@@ -8,7 +8,7 @@ export default async function RegisterPage() {
     redirect('/');
   }
   return(
-    <div className='flex justify-center min-h-screen items-center'>
+    <div className='flex justify-center items-center min-h-[600px]'>
       <Form />
     </div>
   )

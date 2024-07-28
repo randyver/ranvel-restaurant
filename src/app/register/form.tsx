@@ -46,8 +46,8 @@ export default function RegisterForm() {
   };
 
   return (
-    <Card className="w-3/12">
-      <CardHeader><CardTitle className="text-center">Register</CardTitle></CardHeader>
+    <Card className="w-full border-orange-600 md:w-6/12 lg:w-5/12 xl:w-3/12">
+      <CardHeader><CardTitle className="text-center text-orange-600">Register</CardTitle></CardHeader>
       <CardContent>
         <Form {...methods}>
           <form
@@ -138,7 +138,7 @@ export default function RegisterForm() {
           </form>
         </Form>
         <p className="text-center mt-4">
-          Sudah memiliki akun? <Link href="/login" className="text-blue-500">Login</Link>
+          Have an account? <Link href="/login" className="text-orange-600">Login</Link>
         </p>
       </CardContent>
     </Card>
