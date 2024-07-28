@@ -22,7 +22,7 @@ export default function RootLayout({
             isNavBarActive={isNavBarActive} 
             setIsNavBarActive={setIsNavBarActive} 
           />
-          <main>{children}</main>
+          <main className="p-10">{children}</main>
         </SessionProvider>
       </body>
     </html>
