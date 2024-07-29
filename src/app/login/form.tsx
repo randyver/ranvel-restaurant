@@ -73,7 +73,7 @@ export default function LoginForm() {
           <Button type="submit">Login</Button>
         </form>
         <p className="text-center mt-4">
-          Don't have an account yet? <Link href="/register" className="text-orange-600">Register</Link>
+          Don&apos;t have an account yet? <Link href="/register" className="text-orange-600">Register</Link>
         </p>
       </CardContent>
     </Card>
