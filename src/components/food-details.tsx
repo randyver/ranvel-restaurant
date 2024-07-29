@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { toast } from 'sonner';
 
 interface Food {
   id: number;
@@ -52,10 +53,10 @@ export default function FoodDetail() {
           throw new Error('Failed to add item to cart');
         }
 
-        alert('Item added to cart');
+        toast.success('Item added to cart');
       } catch (error) {
         console.error('Error adding item to cart:', error);
-        alert('Failed to add item to cart');
+        toast.error('Failed to add item to cart');
       }
     }
   };

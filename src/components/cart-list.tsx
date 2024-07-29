@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 interface CartItem {
   id: number;
@@ -44,14 +45,17 @@ export default function Cart() {
       });
       const data = await response.json();
       if (response.ok) {
+        toast.success('Checkout successful');
         router.push(`/order/${data.orderId}`);
       } else {
         console.error('Failed to checkout:', data.error);
-        // Handle error (e.g., show a message to the user)
+        if (data.error === 'Insufficient saldo') {
+          toast.error('Failed to checkout, Your saldo is not enough');
+        }
       }
     } catch (error) {
       console.error('Error during checkout:', error);
-      // Handle error (e.g., show a message to the user)
+      toast.error('Failed to checkout');
     }
   };
 
