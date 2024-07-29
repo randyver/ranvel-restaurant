@@ -70,6 +70,17 @@ export async function DELETE(req: NextRequest) {
 
   const client = await sql.connect();
 
+  if (req.headers.get('X-Action') === 'CANCEL_CART') {
+    // Handle cart cancellation
+    try {
+      await sql`DELETE FROM carts WHERE user_id = ${userId}`;
+      return NextResponse.json({ success: true });
+    } catch (error) {
+      console.error('Error canceling cart:', error);
+      return NextResponse.json({ error: 'Failed to cancel cart' }, { status: 500 });
+    }
+  }
+
   try {
     await client.query('BEGIN');
 
@@ -91,6 +102,10 @@ export async function DELETE(req: NextRequest) {
       await client.query('ROLLBACK');
       console.log('Insufficient saldo');
       return NextResponse.json({ error: 'Insufficient saldo' }, { status: 400 });
+    }
+
+    if (totalAmount === 0) {
+      return NextResponse.json({ error: 'Cart is empty' }, { status: 400 });
     }
 
     // Insert into orders table
