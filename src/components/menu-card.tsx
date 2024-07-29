@@ -22,8 +22,8 @@ export default function MenuCard({ id, title, description, price }: MenuCardProp
       className="w-full max-w-sm mx-auto border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition-transform duration-300 cursor-pointer"
       onClick={handleClick}
     >
-      <CardHeader className="relative">
-        <Image src="/food-img.png" alt={title} width={500} height={300} className="object-cover" />
+      <CardHeader className="relative p-0 m-0">
+        <Image src="/foods.jpg" alt={title} layout="responsive" width={500} height={300} className="object-cover w-full h-full" />
       </CardHeader>
       <CardContent className="p-4 flex justify-center flex-col items-center">
         <CardTitle className="text-xl font-semibold xl:text-2xl">{title}</CardTitle>
