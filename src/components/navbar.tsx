@@ -51,7 +51,7 @@ export default function NavBar({
 
   return (
     <nav
-      className="sticky left-0 right-0 top-0 z-[50] flex w-full flex-col"
+      className="sticky left-0 right-0 top-0 z-[50] flex w-full flex-col bg-orange-200"
       id="navbar"
     >
       <div className="flex h-24 flex-row items-center justify-between px-7 xl:px-14">
@@ -93,7 +93,7 @@ export default function NavBar({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="absolute -z-50 h-full w-full overflow-hidden lg:hidden">
-              <div className="absolute h-full w-full bg-orange-400" />
+              <div className="absolute h-full w-full bg-orange-300" />
               <div className="absolute -z-10 h-full w-full bg-black" />
             </div>
 
@@ -113,10 +113,12 @@ export default function NavBar({
                   currentPath === url ||
                   (url !== "/" && currentPath.startsWith(url));
                 return (
-                  <li key={name}>
+                  <li key={name} className="group relative">
                     <Link
                       href={url}
-                      className={`${isActive ? "font-bold" : "font-medium"}`}
+                      className={`font-medium transition-all duration-300 ease-in-out ${
+                        isActive ? "font-bold text-orange-600" : "after:w-0"
+                      } after:absolute after:left-1/2 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-600 after:transition-all after:duration-300 after:ease-in-out group-hover:after:left-0 group-hover:after:w-full`}
                     >
                       {name}
                     </Link>
