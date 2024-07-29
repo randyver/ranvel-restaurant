@@ -90,38 +90,40 @@ export default function Cart() {
   return (
     <div className="p-6 rounded-lg border-orange-400 border-2">
       <h1 className="text-3xl font-bold mb-4 text-center xl:text-4xl">Your Cart</h1>
-      <ul className="divide-y divide-gray-200">
-        {cartItems.length > 0 ? (
-          cartItems.map((item) => (
-            <li key={item.id} className="flex justify-between py-4">
-              <span className="text-xl">{item.name}</span>
-              <span className="text-xl font-medium">
-                Rp{item.price} x {item.quantity}
-              </span>
-            </li>
-          ))
-        ) : (
-          <li className="text-center py-4 text-gray-500">Your cart is empty.</li>
-        )}
-      </ul>
-      {cartItems.length > 0 && (
-        <div className="mt-4 text-xl xl:text-2xl font-bold text-right">Total: Rp{total}</div>
+      {cartItems.length === 0 ? (
+        <div className="text-center py-4 text-gray-500">
+          Your cart is empty.
+        </div>
+      ) : (
+        <>
+          <ul className="divide-y divide-gray-200">
+            {cartItems.map((item) => (
+              <li key={item.id} className="flex justify-between py-4">
+                <span className="text-xl">{item.name}</span>
+                <span className="text-xl font-medium">
+                  Rp{item.price} x {item.quantity}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-4 text-xl xl:text-2xl font-bold text-right">Total: Rp{total}</div>
+          <div className="mt-6 flex justify-between">
+            <Button
+              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded xl:text-lg"
+              variant={"destructive"}
+              onClick={handleCancelCart}
+            >
+              Cancel Cart
+            </Button>
+            <Button
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded xl:text-lg"
+              onClick={handleCheckout}
+            >
+              Checkout
+            </Button>
+          </div>
+        </>
       )}
-      <div className="mt-6 flex justify-between">
-        <Button
-          className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded xl:text-lg"
-          variant={"destructive"}
-          onClick={handleCancelCart}
-        >
-          Cancel Cart
-        </Button>
-        <Button
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded xl:text-lg"
-          onClick={handleCheckout}
-        >
-          Checkout
-        </Button>
-      </div>
     </div>
   );
 }
