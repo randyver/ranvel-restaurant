@@ -33,7 +33,7 @@ export default function MenuList() {
 
   return (
     <div className="p-6">
-      <h2 className="font-semibold text-center text-4xl xl:text-5xl">
+      <h2 className="font-bold text-center text-3xl xl:text-4xl">
         Our <span className="text-orange-600">Menus</span>
       </h2>
       <div className="flex justify-center my-20">

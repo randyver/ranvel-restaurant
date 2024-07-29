@@ -33,7 +33,7 @@ export default function HistoryOrder() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold">Order History</h1>
+      <h1 className="text-3xl font-bold text-center mb-20 xl:text-4xl">Order History</h1>
       <div className="space-y-4">
         {orders.map(order => (
           <HistoryCard
