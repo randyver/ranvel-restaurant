@@ -50,26 +50,27 @@ export default function OrderDetails() {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">Order Details</h1>
+    <div className="max-w-md mx-auto p-6 bg-gray-100 border border-gray-300 rounded-lg">
+      <h1 className="text-center text-2xl font-bold mb-4">Order Details</h1>
       <p><strong>Order ID:</strong> {order.order_id}</p>
       <p><strong>Order Date:</strong> {new Date(order.order_date).toLocaleString()}</p>
       <p><strong>Username:</strong> {order.username}</p>
       <p><strong>Email:</strong> {order.email}</p>
-      <h2 className="text-xl font-semibold mt-4">Items</h2>
-      <ul>
+      <h2 className="text-xl font-semibold mt-6">Items</h2>
+      <ul className="mt-2 border-t border-dashed border-gray-300 pt-2">
         {orderItems.length > 0 ? (
           orderItems.map(item => (
-            <li key={item.food_id} className="flex justify-between py-2">
-              <span>{item.name}</span>
-              <span>Rp{item.price} x {item.quantity}</span>
+            <li key={item.food_id} className="flex justify-between py-2 border-b border-dashed border-gray-300">
+              <span className="w-3/5">{item.name}</span>
+              <span className="w-1/5 text-right">{item.quantity} x</span>
+              <span className="w-1/5 text-right">Rp{item.price}</span>
             </li>
           ))
         ) : (
           <li>No items in your order.</li>
         )}
       </ul>
-      <div className="mt-4 text-xl font-bold">Total Amount: Rp{order.total_amount}</div>
+      <div className="mt-4 text-xl font-bold text-right">Total Amount: Rp{order.total_amount}</div>
     </div>
   );
 }
