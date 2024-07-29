@@ -42,6 +42,10 @@ export async function POST(req: NextRequest) {
     const { foodId, quantity } = await req.json();
     console.log('Received:', { userId, foodId, quantity });
 
+    if(quantity == 0){
+      return NextResponse.json({ error: 'Null item' }, { status: 400 });
+    }
+
     await sql`
       INSERT INTO carts (user_id, food_id, quantity)
       VALUES (${userId}, ${foodId}, ${quantity})
@@ -50,6 +54,7 @@ export async function POST(req: NextRequest) {
     `;
     
     return NextResponse.json({ success: true });
+
   } catch (error) {
     console.error('Error adding to cart:', error);
     return NextResponse.json({ error: 'Failed to add item to cart' }, { status: 500 });

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Button } from "./ui/button";
 
 interface CartItem {
   id: number;
@@ -48,13 +49,12 @@ export default function Cart() {
       });
       const data = await response.json();
       if (response.ok) {
-        toast.success('Checkout successful');
+        toast.success("Checkout successful");
         router.push(`/order/${data.orderId}`);
       } else {
         if (data.error === "Insufficient saldo") {
           toast.error("Failed to checkout, Your saldo is not enough");
-        }
-        else if (data.error === "Cart is empty") {
+        } else if (data.error === "Cart is empty") {
           toast.error("Failed to checkout, Cart is empty");
         }
       }
@@ -64,7 +64,6 @@ export default function Cart() {
     }
   };
 
-  // Add this function inside Cart component
   const handleCancelCart = async () => {
     try {
       const response = await fetch("/api/cart", {
@@ -89,37 +88,42 @@ export default function Cart() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">Your Cart</h1>
-      <ul>
-        {cartItems.length > 0 ? (
-          cartItems.map((item) => (
-            <li key={item.id} className="flex justify-between py-2">
-              <span>{item.name}</span>
-              <span>
-                Rp{item.price} x {item.quantity}
-              </span>
-            </li>
-          ))
-        ) : (
-          <li>Your cart is empty.</li>
-        )}
-      </ul>
-      {cartItems.length > 0 && (
-        <div className="mt-4 text-xl font-bold">Total: Rp{total}</div>
+    <div className="p-6 rounded-lg border-orange-400 border-2">
+      <h1 className="text-3xl font-bold mb-4 text-center xl:text-4xl">Your Cart</h1>
+      {cartItems.length === 0 ? (
+        <div className="text-center py-4 text-gray-500">
+          Your cart is empty.
+        </div>
+      ) : (
+        <>
+          <ul className="divide-y divide-gray-200">
+            {cartItems.map((item) => (
+              <li key={item.id} className="flex justify-between py-4">
+                <span className="text-xl">{item.name}</span>
+                <span className="text-xl font-medium">
+                  Rp{item.price} x {item.quantity}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-4 text-xl xl:text-2xl font-bold text-right">Total: Rp{total}</div>
+          <div className="mt-6 flex justify-between">
+            <Button
+              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded xl:text-lg"
+              variant={"destructive"}
+              onClick={handleCancelCart}
+            >
+              Cancel Cart
+            </Button>
+            <Button
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded xl:text-lg"
+              onClick={handleCheckout}
+            >
+              Checkout
+            </Button>
+          </div>
+        </>
       )}
-      <button
-        className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-        onClick={handleCancelCart}
-      >
-        Cancel Cart
-      </button>
-      <button
-        className="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-        onClick={handleCheckout}
-      >
-        Checkout
-      </button>
     </div>
   );
 }

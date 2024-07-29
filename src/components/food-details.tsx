@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { toast } from 'sonner';
+import { Button } from './ui/button';
 
 interface Food {
   id: number;
@@ -14,7 +15,7 @@ interface Food {
 export default function FoodDetail() {
   const { id } = useParams();
   const [food, setFood] = useState<Food | null>(null);
-  const [quantity, setQuantity] = useState<number>(1);
+  const [quantity, setQuantity] = useState<number>(0);
 
   useEffect(() => {
     if (id) {
@@ -32,7 +33,7 @@ export default function FoodDetail() {
   }, [id]);
 
   const handleQuantityChange = (change: number) => {
-    setQuantity(prev => Math.max(1, prev + change));
+    setQuantity(prev => Math.max(0, prev + change));
   };
 
   const handleAddToCart = async () => {
@@ -48,12 +49,18 @@ export default function FoodDetail() {
             quantity,
           }),
         });
+        
+        const data = await response.json();
 
-        if (!response.ok) {
-          throw new Error('Failed to add item to cart');
+        if(response.ok) {
+          toast.success('Item added to cart');
+        }
+        else{
+          if(data.error === 'Null item'){
+            toast.error('Failed to add item to cart, Quantity cannot be null');
+          }
         }
 
-        toast.success('Item added to cart');
       } catch (error) {
         console.error('Error adding item to cart:', error);
         toast.error('Failed to add item to cart');
@@ -66,38 +73,38 @@ export default function FoodDetail() {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">{food.name}</h1>
-      <p className="text-gray-500">{food.description}</p>
-      <p className="text-gray-900 font-semibold">Rp{food.price}</p>
-      
-      <div className="flex items-center mt-4">
-        <button
-          className="px-4 py-2 bg-gray-200 text-gray-800 rounded-l-md hover:bg-gray-300"
+    <div className="p-6 max-w-2xl mx-auto bg-white rounded-lg shadow-md">
+      <h1 className="text-3xl font-bold mb-4">{food.name}</h1>
+      <p className="text-gray-700 mb-4">{food.description}</p>
+      <p className="text-xl font-semibold text-gray-900 mb-6">Rp{food.price}</p>
+
+      <div className="flex items-center mb-6">
+        <Button
           onClick={() => handleQuantityChange(-1)}
+          className="px-4 py-2 text-lg font-bold bg-gray-400 hover:bg-gray-500 text-white rounded-md"
         >
           -
-        </button>
+        </Button>
         <input
           type="text"
           readOnly
           value={quantity}
-          className="w-16 text-center border border-gray-300"
+          className="w-16 mx-2 text-center text-lg border border-gray-300 rounded-md"
         />
-        <button
-          className="px-4 py-2 bg-gray-200 text-gray-800 rounded-r-md hover:bg-gray-300"
+        <Button
           onClick={() => handleQuantityChange(1)}
+          className="px-4 py-2 text-lg font-bold bg-orange-400 hover:bg-orange-500 text-white rounded-md"
         >
           +
-        </button>
+        </Button>
       </div>
 
-      <button
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      <Button
         onClick={handleAddToCart}
+        className="w-full px-4 py-2 text-lg font-bold bg-orange-600 text-white rounded-md hover:bg-orange-500"
       >
         Add to Cart
-      </button>
+      </Button>
     </div>
   );
 }
