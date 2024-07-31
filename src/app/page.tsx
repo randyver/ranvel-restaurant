@@ -3,9 +3,11 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import 'primeicons/primeicons.css';
 import { TypewriterEffect } from "@/components/typewriter-effect";
+import { useRouter } from "next/navigation";
         
 
 export default function Home() {
+  const router = useRouter();
   const words = [
     {
       text: "Welcome",
@@ -22,6 +24,10 @@ export default function Home() {
     },
   ];
 
+  const handleOrderClick = () => {
+    router.push('/menu');
+  };
+
   return (
     <main className="flex flex-col items-center lg:flex-row">
       <div>
@@ -31,7 +37,7 @@ export default function Home() {
       <TypewriterEffect words={words} className="text-4xl font-semibold"/>
         <p className="mt-10 mb-6 xl:text-lg">Indulge in a culinary journey where every dish is crafted with passion and precision, using the finest ingredients to bring you an unforgettable dining experience. Whether you&apos;re here for a quick bite or a lavish feast, our warm and inviting atmosphere, combined with our dedication to exceptional service, ensures that every visit is a delightful escape from the ordinary. At Ranvel Restaurant, we don&apos;t just serve food; we create memories that linger long after the last bite.</p>
         <div>
-          <Button className="xl:text-lg p-6">Order Food<span className="pi pi-shopping-cart ml-2"></span></Button>
+          <Button className="xl:text-lg p-6" onClick={handleOrderClick}>Order Food<span className="pi pi-shopping-cart ml-2"></span></Button>
         </div>
       </div>
     </main>
