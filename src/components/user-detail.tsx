@@ -1,15 +1,18 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 import Image from "next/image";
+import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
+import { z } from "zod";
+import { toast } from "sonner";
 
 export default function UserDetail() {
   const [user, setUser] = useState({ email: "", username: "", saldo: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showTopUp, setShowTopUp] = useState(false);
   const [topUpAmount, setTopUpAmount] = useState("");
+  const [validationError, setValidationError] = useState("");
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -32,25 +35,44 @@ export default function UserDetail() {
     fetchUserDetails();
   }, []);
 
+  const topUpSchema = z
+    .number()
+    .min(10000)
+    .max(500000)
+    .refine((value) => value % 10000 === 0, {
+      message: "Amount must be a multiple of 10,000",
+    });
+
   const handleTopUp = async () => {
+    const amount = parseInt(topUpAmount, 10);
     try {
+      topUpSchema.parse(amount); // Validate amount
+      setValidationError("");
+
       const response = await fetch("/api/topup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount: topUpAmount }),
+        body: JSON.stringify({ amount }),
       });
+
       if (!response.ok) {
         throw new Error("Failed to top up saldo");
       }
+
       const data = await response.json();
       setUser(data);
-      setShowTopUp(false);
       setTopUpAmount("");
+
+      toast.success("Saldo topped up successfully");
     } catch (error) {
-      console.error("Error topping up saldo:", error);
-      setError("Failed to top up saldo");
+      if (error instanceof z.ZodError) {
+        setValidationError(error.errors[0].message);
+      } else {
+        console.error("Error topping up saldo:", error);
+        setError("Failed to top up saldo");
+      }
     }
   };
 
@@ -59,7 +81,9 @@ export default function UserDetail() {
 
   return (
     <div className="p-4">
-      <h1 className="text-3xl xl:text-4xl text-center font-bold md:mb-10">Profile</h1>
+      <h1 className="text-3xl xl:text-4xl text-center font-bold md:mb-10">
+        Profile
+      </h1>
       <div className="flex flex-col md:flex-row justify-center items-center md:gap-x-20">
         <div className="flex items-center justify-center my-10 md:my-0 md:mt-20">
           <Image
@@ -82,28 +106,27 @@ export default function UserDetail() {
               <strong>Saldo:</strong> Rp{user.saldo}
             </p>
           </div>
-          <Button onClick={() => setShowTopUp(true)} className="my-10 xl:text-lg">
-            Top Up Saldo
-          </Button>
-
-          {showTopUp && (
-            <div className="mt-4 p-4 border rounded">
-              <h2 className="text-xl font-bold">Top Up Saldo</h2>
-              <input
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button className="my-10 xl:text-lg">Top Up Saldo</Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <h2 className="font-bold xl:text-lg">Top Up Saldo</h2>
+              <Input
                 type="number"
-                className="mt-2 p-2 border rounded w-full"
                 value={topUpAmount}
+                className="my-6"
                 onChange={(e) => setTopUpAmount(e.target.value)}
                 placeholder="Enter amount"
               />
-              <Button
-                className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
-                onClick={handleTopUp}
-              >
+              {validationError && (
+                <div className="text-red-500 mt-2">{validationError}</div>
+              )}
+              <Button className="xl:text-lg" onClick={handleTopUp}>
                 Confirm Top Up
               </Button>
-            </div>
-          )}
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
     </div>

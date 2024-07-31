@@ -28,19 +28,24 @@ export default function LoginForm() {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    // Show loading toast
+    const toastId = toast.loading('Logging in...');
+  
     const response = await signIn('credentials', {
       email: data.email,
       password: data.password,
       redirect: false,
     });
-
-    console.log({ response });
+  
     if (!response?.error) {
-      toast.success('Login successful');
+      toast.success('Login successful', { id: toastId });
       router.push('/');
       router.refresh();
+    } else {
+      toast.error('Login failed. Please check your credentials.', { id: toastId });
     }
   };
+  
 
   return (
     <Card className="w-full border-orange-600 md:w-6/12 lg:w-5/12 xl:w-3/12">

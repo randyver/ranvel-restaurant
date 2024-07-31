@@ -42,14 +42,19 @@ export default function RegisterForm() {
   } = methods;
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    // Show loading toast
+    const toastId = toast.loading("Registering...");
+    
     const response = await fetch(`/api/auth/register`, {
       method: "POST",
       body: JSON.stringify(data),
     });
-    console.log({ response });
+
     if (response.ok) {
-      toast.success("Registration successful");
+      toast.success("Registration successful", { id: toastId });
       router.push("/login");
+    } else {
+      toast.error("Registration failed", { id: toastId });
     }
   };
 
