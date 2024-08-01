@@ -1,5 +1,19 @@
 import { AppleCardsCarouselDemo } from "@/components/carousel-about-us";
 import Image from "next/image";
+import { type Metadata } from "next";
+import { openGraphTemplate, twitterTemplate } from "@/lib/metadata";
+
+export const metadata: Metadata = {
+  title: "About Us | Ranvel Restaurant",
+  openGraph: {
+    ...openGraphTemplate,
+    title: "About Us | Ranvel Restaurant",
+  },
+  twitter: {
+    ...twitterTemplate,
+    title: "About Us | Ranvel Restaurant",
+  },
+};
 
 export default function AboutUsPage() {
   return (
