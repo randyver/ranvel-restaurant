@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ranvel Restaurant Website
 
-## Getting Started
+<p align="center">
+<img src="https://ranvel-restaurant.vercel.app/ranvel-logo.png" alt="Ranvel Restaurant" width="500">
+</p>
 
-First, run the development server:
+## Description
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This is the official website for Ranvel Restaurant, where users can browse, order, and purchase food and beverages.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Website Link
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+[https://ranvel-restaurant.vercel.app](https://ranvel-restaurant.vercel.app)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Features
 
-## Learn More
+- **🔐 Register and Login:** Users can register to use the website's full functionality.
+- **📋 Menu:** Displays the menu of food and beverages offered by Ranvel Restaurant.
+- **🛒 Cart:** Users can select and add items to their cart.
+- **🛍️ Order:** Users can place and purchase orders directly on the website.
+- **📜 History:** Order history is saved, allowing users to view their past orders.
 
-To learn more about Next.js, take a look at the following resources:
+## Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Next.js**: React framework for building server-side rendering and static web applications.
+- **TypeScript**: A strongly typed programming language that builds on JavaScript.
+- **Tailwind CSS**: A utility-first CSS framework for styling the application.
+- **Shadcn/UI**: A UI component library.
+- **Aceternity UI**: Another UI component library used in the project.
+- **PostgreSQL**: A powerful, open-source object-relational database system.
+- **Next Authentication**: An authentication library for Next.js applications.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Feedback
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+For suggestions or feedback, please contact me via email at [randyverdian99@gmail.com](mailto:randyverdian99@gmail.com).
