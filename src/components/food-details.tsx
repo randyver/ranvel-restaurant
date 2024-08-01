@@ -37,6 +37,7 @@ export default function FoodDetail() {
   };
 
   const handleAddToCart = async () => {
+    const toastId = toast.loading('Adding to cart...');
     if (food) {
       try {
         const response = await fetch('/api/cart', {
@@ -53,18 +54,22 @@ export default function FoodDetail() {
         const data = await response.json();
 
         if(response.ok) {
-          toast.success('Item added to cart');
-        }
-        else{
+          toast.success('Item added to cart', { id: toastId });
+        } else {
+          toast.dismiss(toastId); // Dismiss loading toast
           if(data.error === 'Null item'){
             toast.error('Failed to add item to cart, Quantity cannot be null');
+          } else {
+            toast.error('Failed to add item to cart');
           }
         }
 
       } catch (error) {
         console.error('Error adding item to cart:', error);
-        toast.error('Failed to add item to cart');
+        toast.error('Failed to add item to cart', { id: toastId });
       }
+    } else {
+      toast.dismiss(toastId); // Dismiss loading toast if food is null
     }
   };
 

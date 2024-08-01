@@ -43,15 +43,17 @@ export default function Cart() {
   }, []);
 
   const handleCheckout = async () => {
+    const toastId = toast.loading('Processing checkout...');
     try {
       const response = await fetch("/api/cart", {
         method: "DELETE",
       });
       const data = await response.json();
       if (response.ok) {
-        toast.success("Checkout successful");
+        toast.success("Checkout successful", { id: toastId });
         router.push(`/order/${data.orderId}`);
       } else {
+        toast.dismiss(toastId);
         if (data.error === "Insufficient saldo") {
           toast.error("Failed to checkout, Your saldo is not enough");
         } else if (data.error === "Cart is empty") {
@@ -60,30 +62,32 @@ export default function Cart() {
       }
     } catch (error) {
       console.error("Error during checkout:", error);
-      toast.error("Failed to checkout");
+      toast.error("Failed to checkout", { id: toastId });
     }
   };
-
+  
   const handleCancelCart = async () => {
+    const toastId = toast.loading('Canceling cart...');
     try {
       const response = await fetch("/api/cart", {
         method: "DELETE",
         headers: {
-          "X-Action": "CANCEL_CART", // Specify the action
+          "X-Action": "CANCEL_CART",
         },
       });
       const data = await response.json();
       if (response.ok) {
-        toast.success("Cart canceled successfully");
-        setCartItems([]); // Clear cart items
-        setTotal(0); // Reset total
+        toast.success("Cart canceled successfully", { id: toastId });
+        setCartItems([]);
+        setTotal(0);
       } else {
+        toast.dismiss(toastId);
         console.error("Failed to cancel cart:", data.error);
         toast.error("Failed to cancel cart");
       }
     } catch (error) {
       console.error("Error during canceling cart:", error);
-      toast.error("Failed to cancel cart");
+      toast.error("Failed to cancel cart", { id: toastId });
     }
   };
 
