@@ -24,10 +24,10 @@ export default function AboutUsPage() {
       <p className="mt-6 xl:text-lg leading-relaxed text-center mx-auto">
         Indulge in a culinary journey where every dish is crafted with passion
         and precision, using the finest ingredients to bring you an
-        unforgettable dining experience. Whether you're here for a quick bite
+        unforgettable dining experience. Whether you&apos;re here for a quick bite
         or a lavish feast, our warm and inviting atmosphere, combined with our
         dedication to exceptional service, ensures that every visit is a
-        delightful escape from the ordinary. At Ranvel Restaurant, we don't
+        delightful escape from the ordinary. At Ranvel Restaurant, we don&apos;t
         just serve food; we create memories that linger long after the last
         bite.
       </p>
@@ -130,7 +130,7 @@ export default function AboutUsPage() {
             Indulge in the delightful flavors of Mochi with our exclusive
             pre-order offer! Savor the sweetness of Daifuku Mochi filled with
             fresh strawberries, creamy Mochi Cream with a variety of flavors,
-            and the unique taste of Dango Mochi. Don't miss out on our
+            and the unique taste of Dango Mochi. Don&apos;t miss out on our
             delectable Mochi Bites, available in a convenient box for easy
             enjoyment. Available for pre-order in East Jakarta, treat yourself
             or your loved ones to these irresistible treats. For more
